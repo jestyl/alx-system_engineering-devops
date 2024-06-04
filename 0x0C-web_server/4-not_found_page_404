@@ -3,7 +3,7 @@
 apt-get update -y
 apt-get install nginx -y
 touch /var/www/html/index.html
-echo "Hello World" > /var/www/html/index.html
+echo "Hello World!" > /var/www/html/index.html
 touch /var/www/html/error.html
 echo "Ceci n'est pas une page" > /var/www/html/error.html
 error="\n\terror_page 404 \/error.html;\n"

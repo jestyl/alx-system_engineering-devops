@@ -1,16 +1,23 @@
-# install nginx
+# Installs nginx and configures it with redirect
 package { 'nginx':
   ensure => installed,
 }
 
-# website index file
-file { '/var/www/html/index.html':
-  content => 'Hello World!',
+file { 'index.html':
+  path => '/var/www/html/index.html',
+  ensure  => present,
+  content => 'Hello World!'
 }
 
-# run nginx
-exec { 'start service':
-  command => 'sudo service nginx start',
-  path    => ['/bin', '/usr/bin', '/usr/sbin'],
+file_line { 'redir':
+  ensure => 'present',
+  path   => '/etc/nginx/sites-available/default',
+  after  => 'listen 80 default_server;',
+  line   => 'rewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;',
 }
 
+service { 'nginx':
+  ensure  => running,
+  restart => true,
+  require => Package['nginx'],
+}
